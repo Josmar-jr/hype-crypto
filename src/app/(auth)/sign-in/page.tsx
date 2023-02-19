@@ -1,4 +1,6 @@
 import { Button } from '@/components/commons/Button'
+import { SuccessfulModal } from '@/components/SuccessfulModal'
+
 import Image from 'next/image'
 
 import Link from 'next/link'
@@ -64,6 +66,8 @@ export default function SignIn() {
         <div className="w-full flex items-center justify-center mt-12">
           <Button variant="outlined">Carregar mais opções</Button>
         </div>
+
+        <SuccessfulModal code="0x800224f44addcfff174243ad3ac4d9de463df927f017475ba479bfc76cd65838" />
       </main>
     </div>
   )
