@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+.has-pseudo:has(input:focus) {
+  @apply ring-1 ring-indigo-500;
+}
