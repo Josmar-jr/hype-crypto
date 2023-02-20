@@ -3,5 +3,9 @@
 @tailwind components;
 
 .has-pseudo:has(input:focus) {
-  @apply ring-1 ring-indigo-500;
+  @apply ring-1 ring-indigo-500
+}
+
+.transition-image {
+  transition: 0.4s ease;
 }

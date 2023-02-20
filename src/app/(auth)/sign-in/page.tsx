@@ -1,11 +1,18 @@
-import { Button } from '@/components/commons/Button'
-import { SuccessfulModal } from '@/components/SuccessfulModal'
-
-import Image from 'next/image'
-
+'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 
+import { SuccessfulModal } from '@/components/SuccessfulModal'
+import { WalletList } from '@/components/WalletList'
+import { useAddress } from '@thirdweb-dev/react'
+
 export default function SignIn() {
+  const code = useAddress()
+
+  const [isOpenSuccessfulModal, setIsOpenSuccessfulModal] = useState(
+    !code ?? false,
+  )
+
   return (
     <div className="max-w-7xl mx-auto px-4">
       <div className="py-16 border-b border-zinc-200 flex justify-between">
@@ -20,54 +27,13 @@ export default function SignIn() {
       </div>
 
       <main className="mt-12 w-full">
-        <div className="flex justify-center gap-8">
-          <button className="border hover:shadow-lg transition-shadow border-zinc-200 rounded-lg flex flex-col gap-4 items-center justify-center h-[394px] flex-1 shadow focus:ring-2 focus:ring-indigo-500 outline-none">
-            <Image
-              className="w-20"
-              width={120}
-              height={120}
-              src="/wallets/coin-base.png"
-              alt="Meta mask"
-              quality={100}
-            />
+        <WalletList />
 
-            <span className="font-medium text-lg">MetaMask</span>
-          </button>
-          <button className="border hover:shadow-lg transition-shadow border-zinc-200 rounded-lg flex flex-col gap-4 items-center relative justify-center h-[394px] flex-1 shadow focus:ring-2 focus:ring-indigo-500 outline-none">
-            <span className="bg-indigo-500 rounded-full px-3 py-1 text-zinc-100 font-medium absolute -top-4">
-              Popular
-            </span>
-
-            <Image
-              className="w-20"
-              width={120}
-              height={120}
-              src="/wallets/meta-mask.png"
-              alt="Meta mask"
-              quality={100}
-            />
-
-            <span className="font-medium text-lg">MetaMask</span>
-          </button>
-          <button className="border hover:shadow-lg transition-shadow border-zinc-200 rounded-lg flex flex-col gap-4 items-center justify-center h-[394px] flex-1 shadow focus:ring-2 focus:ring-indigo-500 outline-none">
-            <Image
-              className="w-20"
-              width={120}
-              height={120}
-              src="/wallets/phaton-wallet.png"
-              alt="Meta mask"
-              quality={100}
-            />
-
-            <span className="font-medium text-lg">MetaMask</span>
-          </button>
-        </div>
-
-        <div className="w-full flex items-center justify-center mt-12">
-          <Button variant="outlined">Carregar mais opções</Button>
-        </div>
-
-        <SuccessfulModal code="0x800224f44addcfff174243ad3ac4d9de463df927f017475ba479bfc76cd65838" />
+        <SuccessfulModal
+          open={isOpenSuccessfulModal}
+          onOpenChange={setIsOpenSuccessfulModal}
+          code={code}
+        />
       </main>
     </div>
   )
