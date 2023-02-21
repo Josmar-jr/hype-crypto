@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useContract, useListings } from '@thirdweb-dev/react'
 import { Filter, Grid } from 'lucide-react'
@@ -14,11 +14,26 @@ type Distribution = 'normal' | 'more'
 export default function Explore() {
   const [listDistribution, setListDistribution] =
     useState<Distribution>('normal')
+  const [searchNFT, setSearchNFT] = useState('')
 
   const { contract } = useContract('0x04C47E75Fa3C98335Da055C725809356e5f389B6')
 
   // @ts-ignore
   const { data: nfts } = useListings<Marketplace>(contract)
+
+  const filteredNFTs = useMemo(() => {
+    if (!nfts || searchNFT === '') {
+      return []
+    }
+
+    return nfts
+      ?.filter((nft) => {
+        const name = nft.asset.name as string
+
+        return name.toLocaleLowerCase().includes(searchNFT.toLocaleLowerCase())
+      })
+      .slice(0, 6)
+  }, [searchNFT, nfts])
 
   return (
     <div className="max-w-7xl mx-auto px-4 w-full">
@@ -34,7 +49,26 @@ export default function Explore() {
 
           <span>14.298 resultados</span>
 
-          <Input className="flex-1 w-full" name="search" />
+          <div className="relative">
+            <Input
+              name="search"
+              className="max-w-7xl w-full"
+              value={searchNFT}
+              onChange={(event) => setSearchNFT(event.target.value)}
+            />
+            <ul className="w-full bg-white shadow rounded-xl absolute z-40 top-11">
+              {filteredNFTs?.map((nft) => (
+                <li key={nft.id}>
+                  <button className="flex justify-between px-3 py-3 w-full focus:ring-1 outline-none focus:ring-indigo-500 hover:bg-zinc-100 transition-colors first:rounded-t-xl last:rounded-b-xl">
+                    <span className="font-medium">{nft.asset.name}</span>
+                    <span className="text-sm">
+                      {nft.buyoutCurrencyValuePerToken.displayValue}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="rounded-xl border border-zinc-300">
             <button
