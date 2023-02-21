@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useContract, useListings } from '@thirdweb-dev/react'
 import { Filter, Grid } from 'lucide-react'
@@ -7,7 +7,7 @@ import cln from 'classnames'
 
 import { Input } from '@/components/commons/Input'
 import { NFTCard } from '@/components/NFTCard'
-import { Marketplace } from '@thirdweb-dev/sdk'
+import { AuctionListing, DirectListing, Marketplace } from '@thirdweb-dev/sdk'
 
 type Distribution = 'normal' | 'more'
 
@@ -15,11 +15,15 @@ export default function Explore() {
   const [listDistribution, setListDistribution] =
     useState<Distribution>('normal')
   const [searchNFT, setSearchNFT] = useState('')
-
   const { contract } = useContract('0x04C47E75Fa3C98335Da055C725809356e5f389B6')
 
   // @ts-ignore
   const { data: nfts } = useListings<Marketplace>(contract)
+  const [NFTs, setNFTs] = useState<(AuctionListing | DirectListing)[]>(
+    nfts ?? [],
+  )
+
+  const countNFTs = NFTs.length
 
   const filteredNFTs = useMemo(() => {
     if (!nfts || searchNFT === '') {
@@ -35,6 +39,19 @@ export default function Explore() {
       .slice(0, 6)
   }, [searchNFT, nfts])
 
+  function handleSelectSearchNFT(nftId: string) {
+    if (nfts) {
+      setNFTs(nfts?.filter((nft) => nft.id === nftId) ?? nfts)
+    }
+    setSearchNFT('')
+  }
+
+  useEffect(() => {
+    if (nfts) {
+      setNFTs(nfts)
+    }
+  }, [nfts])
+
   return (
     <div className="max-w-7xl mx-auto px-4 w-full">
       <div className="py-16 border-b border-zinc-200 flex justify-between">
@@ -47,19 +64,36 @@ export default function Explore() {
             <Filter size={22} className="stroke-2" />
           </button>
 
-          <span>14.298 resultados</span>
+          <span>{countNFTs} resultados</span>
 
-          <div className="relative">
+          <div className="relative max-w-xl w-full">
             <Input
               name="search"
-              className="max-w-7xl w-full"
+              className="w-full z-50"
               value={searchNFT}
               onChange={(event) => setSearchNFT(event.target.value)}
             />
-            <ul className="w-full bg-white shadow rounded-xl absolute z-40 top-11">
+
+            <ul
+              className={cln(
+                'w-full bg-white -translate-y-8 shadow opacity-0 rounded-xl absolute z-40 top-11 animate-scale-in transition-image pointer-events-none',
+                {
+                  'opacity-100 translate-y-0 pointer-events-auto':
+                    filteredNFTs.length > 0,
+                },
+              )}
+            >
+              <li className="flex justify-between px-3 py-3 w-full rounded-t-xl">
+                <span className="font-bold text-zinc-400">Nome</span>
+                <span className="font-bold text-zinc-400">Valor</span>
+              </li>
+
               {filteredNFTs?.map((nft) => (
                 <li key={nft.id}>
-                  <button className="flex justify-between px-3 py-3 w-full focus:ring-1 outline-none focus:ring-indigo-500 hover:bg-zinc-100 transition-colors first:rounded-t-xl last:rounded-b-xl">
+                  <button
+                    onClick={() => handleSelectSearchNFT(nft.id)}
+                    className="flex justify-between px-3 py-3 w-full focus:ring-1 outline-none focus:ring-indigo-500 hover:bg-zinc-100 transition-colors last:rounded-b-xl"
+                  >
                     <span className="font-medium">{nft.asset.name}</span>
                     <span className="text-sm">
                       {nft.buyoutCurrencyValuePerToken.displayValue}
@@ -98,7 +132,7 @@ export default function Explore() {
             'grid-cols-6': listDistribution === 'more',
           })}
         >
-          {nfts?.map((nft) => (
+          {NFTs?.map((nft) => (
             <NFTCard key={nft.id} nft={nft} />
           ))}
         </div>

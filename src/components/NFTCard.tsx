@@ -10,7 +10,7 @@ interface NftProps {
 export function NFTCard({ nft }: NftProps) {
   return (
     <article className="rounded-2xl z-20 relative p-0 bg-white shadow group focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 block outline-none">
-      <Link href="/">
+      <Link href={`/explore/${nft.asset.id}`} prefetch>
         <>
           <div className="overflow-hidden rounded-t-2xl">
             <span className="group-hover:opacity-100 opacity-0 transition-image rounded-full bg-zinc-300 absolute top-3 left-3 z-10 p-[6px] bg-opacity-30">
