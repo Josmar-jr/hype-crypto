@@ -69,14 +69,14 @@ export default function Explore() {
           <div className="relative max-w-xl w-full">
             <Input
               name="search"
-              className="w-full z-50"
+              className="w-full z-20"
               value={searchNFT}
               onChange={(event) => setSearchNFT(event.target.value)}
             />
 
             <ul
               className={cln(
-                'w-full bg-white -translate-y-8 shadow opacity-0 rounded-xl absolute z-40 top-11 animate-scale-in transition-image pointer-events-none',
+                'w-full bg-white -translate-y-8 shadow opacity-0 rounded-xl absolute z-10 top-11 animate-scale-in transition-image pointer-events-none',
                 {
                   'opacity-100 translate-y-0 pointer-events-auto':
                     filteredNFTs.length > 0,

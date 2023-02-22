@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Menu, X } from 'lucide-react'
+import { Menu, ShoppingCart, X } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from './commons/Button'
+import { CartDrawer } from './CartDrawer'
 
 export function Header() {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
@@ -46,6 +47,14 @@ export function Header() {
           <div className="flex gap-2 items-center">
             <Button variant="outlined">SignIn</Button>
             <Button>Create</Button>
+
+            <CartDrawer
+              trigger={
+                <button className="p-2">
+                  <ShoppingCart size={20} className="stroke-zinc-700" />
+                </button>
+              }
+            />
           </div>
         </div>
 

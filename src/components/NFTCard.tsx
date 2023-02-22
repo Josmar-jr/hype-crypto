@@ -2,9 +2,14 @@
 
 import { AuctionListing, DirectListing } from '@thirdweb-dev/sdk'
 import { ShoppingCart } from 'lucide-react'
-import * as Tooltip from '@radix-ui/react-tooltip'
 import Image from 'next/image'
 import Link from 'next/link'
+import {
+  TooltipRoot,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+} from './commons/Tooltip'
 
 interface NftProps {
   nft: AuctionListing | DirectListing
@@ -16,9 +21,9 @@ export function NFTCard({ nft }: NftProps) {
       <Link href={`/explore/${nft.asset.id}`} prefetch>
         <>
           <div className="overflow-hidden rounded-t-2xl">
-            <Tooltip.Provider>
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
+            <TooltipProvider>
+              <TooltipRoot>
+                <TooltipTrigger asChild>
                   <span className="group-hover:opacity-100 opacity-0 transition-image rounded-full bg-zinc-300 absolute top-3 left-3 z-10 p-[6px] bg-opacity-30">
                     <svg
                       fill="white"
@@ -32,15 +37,10 @@ export function NFTCard({ nft }: NftProps) {
                       ></path>
                     </svg>
                   </span>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content className="z-50 bg-zinc-800 rounded-md py-3 px-4 shadow text-white font-bold">
-                    Chain: Etherium
-                    <Tooltip.Arrow className="fill-zinc-800" />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-            </Tooltip.Provider>
+                </TooltipTrigger>
+                <TooltipContent>Chain: Etherium</TooltipContent>
+              </TooltipRoot>
+            </TooltipProvider>
 
             <Image
               className="group-hover:scale-110 origin-center w-full h-full transition-image"
@@ -64,7 +64,7 @@ export function NFTCard({ nft }: NftProps) {
 
       <button
         onClick={() => console.log('test')}
-        className="bg-indigo-500 z-80 hover:bg-indigo-400 text-zinc-100 flex gap-2 items-center justify-center font-medium transition-image w-full rounded-b-xl py-2 absolute bottom-0 opacity-0 group-hover:opacity-100"
+        className="bg-indigo-500 z-50 hover:bg-indigo-400 text-zinc-100 flex gap-2 items-center justify-center font-medium transition-image w-full rounded-b-xl py-2 absolute bottom-0 opacity-0 group-hover:opacity-100"
       >
         <ShoppingCart size={18} />
         Add to cart
