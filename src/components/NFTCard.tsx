@@ -34,9 +34,9 @@ export function NFTCard({ nft }: NftProps) {
                   </span>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
-                  <Tooltip.Content className="z-50 bg-zinc-800 rounded-md py-3 px-4 shadow text-white font-bold">
+                  <Tooltip.Content className="z-50 bg-slate-800 rounded-md py-3 px-4 shadow text-white font-bold">
                     Chain: Etherium
-                    <Tooltip.Arrow className="fill-zinc-800" />
+                    <Tooltip.Arrow className="fill-slate-800" />
                   </Tooltip.Content>
                 </Tooltip.Portal>
               </Tooltip.Root>

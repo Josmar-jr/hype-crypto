@@ -8,6 +8,7 @@ import cln from 'classnames'
 import { Input } from '@/components/commons/Input'
 import { NFTCard } from '@/components/NFTCard'
 import { AuctionListing, DirectListing, Marketplace } from '@thirdweb-dev/sdk'
+import { CartDrawer } from '@/components/CartDrawer'
 
 type Distribution = 'normal' | 'more'
 
@@ -137,6 +138,8 @@ export default function Explore() {
           ))}
         </div>
       </div>
+
+      <CartDrawer />
     </div>
   )
 }
