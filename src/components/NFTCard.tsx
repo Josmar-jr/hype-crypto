@@ -1,5 +1,8 @@
+'use client'
+
 import { AuctionListing, DirectListing } from '@thirdweb-dev/sdk'
 import { ShoppingCart } from 'lucide-react'
+import * as Tooltip from '@radix-ui/react-tooltip'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -13,19 +16,31 @@ export function NFTCard({ nft }: NftProps) {
       <Link href={`/explore/${nft.asset.id}`} prefetch>
         <>
           <div className="overflow-hidden rounded-t-2xl">
-            <span className="group-hover:opacity-100 opacity-0 transition-image rounded-full bg-zinc-300 absolute top-3 left-3 z-10 p-[6px] bg-opacity-30">
-              <svg
-                fill="white"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-              >
-                <path
-                  d="M18.527 12.2062L12 16.1938L5.46875 12.2062L12 1L18.527 12.2062ZM12 17.4742L5.46875 13.4867L12 23L18.5312 13.4867L12 17.4742V17.4742Z"
-                  fill="white"
-                ></path>
-              </svg>
-            </span>
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <span className="group-hover:opacity-100 opacity-0 transition-image rounded-full bg-zinc-300 absolute top-3 left-3 z-10 p-[6px] bg-opacity-30">
+                    <svg
+                      fill="white"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        d="M18.527 12.2062L12 16.1938L5.46875 12.2062L12 1L18.527 12.2062ZM12 17.4742L5.46875 13.4867L12 23L18.5312 13.4867L12 17.4742V17.4742Z"
+                        fill="white"
+                      ></path>
+                    </svg>
+                  </span>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="z-50 bg-zinc-800 rounded-md py-3 px-4 shadow text-white font-bold">
+                    Chain: Etherium
+                    <Tooltip.Arrow className="fill-zinc-800" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
 
             <Image
               className="group-hover:scale-110 origin-center w-full h-full transition-image"
